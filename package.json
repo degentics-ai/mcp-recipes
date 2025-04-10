@@ -1,0 +1,40 @@
+{
+  "name": "mcp-recipes",
+  "version": "1.0.0",
+  "description": "MCP server for querying recipes",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "db:init": "ts-node scripts/init-db.ts",
+    "dev:watch": "ts-node-dev --respawn src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mcp",
+    "recipes",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.3.42",
+    "@langchain/openai": "^0.4.4",
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@upstash/vector": "^1.2.1",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
+    "csv-parser": "^3.2.0",
+    "express": "^4.21.2",
+    "fs-extra": "^11.3.0",
+    "langchain": "^0.3.19",
+    "pandas-js": "^0.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "zod-to-json-schema": "^3.24.3"
+  }
+}

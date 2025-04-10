@@ -30,17 +30,29 @@ const getAllRecipesInputSchema = z.object({
     .default(10),
 });
 
+const getRecipeByIdsInputSchema = z.object({
+  ids: z.array(z.string()),
+});
+
 export type SearchOptions = z.infer<typeof getAllRecipesInputSchema>;
 
 const recipeStore = new RecipeVectorStore();
 
 const toolsArray: Tool[] = [
   {
-    name: "get_recipes",
-    description: "Search for recipes",
+    name: "search_recipes",
+    description: "Search for recipes by name, ingredients, or description",
     inputSchema: getAllRecipesInputSchema,
     execute: async (params: z.infer<typeof getAllRecipesInputSchema>) => {
       return recipeStore.searchRecipes(params);
+    },
+  },
+  {
+    name: "get_recipe_by_id",
+    description: "Get a recipe by its ID",
+    inputSchema: getRecipeByIdsInputSchema,
+    execute: async (params: z.infer<typeof getRecipeByIdsInputSchema>) => {
+      return recipeStore.getRecipeByIds(params.ids);
     },
   },
 ];

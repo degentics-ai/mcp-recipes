@@ -48,6 +48,12 @@ class RecipeVectorStore {
     await this.index.upsert(vectorDocs, { namespace: "recipes-namespace" });
   }
 
+  // get recipes by ids
+  async getRecipeByIds(ids: string[]) {
+    return this.index.fetch(ids, { namespace: "recipes-namespace" });
+  }
+
+  // search recipes
   async searchRecipes(params: SearchOptions) {
     // Build query filter based on search options
     const getMetadataFilter = () => {

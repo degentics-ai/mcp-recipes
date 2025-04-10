@@ -79,6 +79,11 @@ export function createApp(toolsArray: Tool[]): Express {
   app.get("/sse", async (req, res) => {
     console.log("SSE endpoint hit");
 
+    if (req.headers.authorization !== `Bearer ${process.env.MCP_API_KEY}`) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
     // Create a new transport for this connection
     const transport = new SSEServerTransport("/message", res);
 
@@ -101,6 +106,11 @@ export function createApp(toolsArray: Tool[]): Express {
   // Set up MCP endpoint
   app.post("/message", async (req, res) => {
     const sessionId = req.query.sessionId as string;
+
+    if (req.headers.authorization !== `Bearer ${process.env.MCP_API_KEY}`) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
 
     if (!sessionId || !transports.has(sessionId)) {
       res.status(400).json({ error: "Invalid or missing sessionId" });

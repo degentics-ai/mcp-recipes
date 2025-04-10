@@ -79,11 +79,6 @@ export function createApp(toolsArray: Tool[]): Express {
   app.get("/sse", async (req, res) => {
     console.log("SSE endpoint hit");
 
-    if (req.headers.authorization !== `Bearer ${process.env.MCP_API_KEY}`) {
-      res.status(401).json({ error: "Unauthorized" });
-      return;
-    }
-
     // Create a new transport for this connection
     const transport = new SSEServerTransport("/message", res);
 

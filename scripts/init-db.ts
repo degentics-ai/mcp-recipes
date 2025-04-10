@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createReadStream } from "fs";
 import { parse } from "csv-parse";
 
-import { RecipeVectorStore, Recipe } from "../src/db";
+import { RecipeVectorStore, Recipe } from "../api/db";
 
 const BATCH_SIZE = 100; // Process 100 recipes at a time
 

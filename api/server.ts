@@ -11,6 +11,7 @@ import {
 
 import { type Tool } from "./types";
 import { name, version } from "../package.json";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 const createMCPServer = (toolsArray: Tool[]) => {
   const server = new Server(
@@ -25,8 +26,14 @@ const createMCPServer = (toolsArray: Tool[]) => {
     }
   );
 
+  // convert the inputSchema to a json schema
+  const tools = toolsArray.map((tool) => ({
+    ...tool,
+    inputSchema: zodToJsonSchema(tool.inputSchema),
+  }));
+
   server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return { tools: toolsArray };
+    return { tools };
   });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {

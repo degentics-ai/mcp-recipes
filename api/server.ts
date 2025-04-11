@@ -72,12 +72,21 @@ export function createApp(toolsArray: Tool[]): Express {
   // Create express app
   const app = express();
 
+  // Create MCP server
+  const mcpServer = createMCPServer(toolsArray);
+
   // Set up CORS
   app.use(cors({ maxAge: 84600 }));
 
   // Set up SSE endpoint
   app.get("/sse", async (req, res) => {
     console.log("SSE endpoint hit");
+
+    // Simple auth based on API key
+    if (req.headers.authorization !== `Bearer ${process.env.MCP_API_KEY}`) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
 
     // Create a new transport for this connection
     const transport = new SSEServerTransport("/message", res);
@@ -94,7 +103,6 @@ export function createApp(toolsArray: Tool[]): Express {
       transports.delete(sessionId);
     });
 
-    const mcpServer = createMCPServer(toolsArray);
     await mcpServer.connect(transport);
   });
 
@@ -102,6 +110,7 @@ export function createApp(toolsArray: Tool[]): Express {
   app.post("/message", async (req, res) => {
     const sessionId = req.query.sessionId as string;
 
+    // Simple auth based on API key
     if (req.headers.authorization !== `Bearer ${process.env.MCP_API_KEY}`) {
       res.status(401).json({ error: "Unauthorized" });
       return;
